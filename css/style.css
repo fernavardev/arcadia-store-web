@@ -303,3 +303,75 @@ footer a:hover {
     overflow-x: auto;
   }
 }
+
+/* Formulario de registro */
+.register-section {
+  margin-bottom: 42px;
+}
+
+.register-form {
+  padding: 34px;
+  background: linear-gradient(180deg, var(--color-card), var(--color-bg-soft));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  animation: fadeUp 0.8s ease;
+}
+
+.register-form .form-label {
+  color: var(--color-text);
+  font-weight: bold;
+}
+
+.register-form .form-control {
+  border-radius: 12px;
+}
+
+.register-form .form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.25rem rgba(53, 167, 255, 0.18);
+}
+
+.error-message {
+  min-height: 22px;
+  margin-top: 6px;
+  color: #ff9aa2;
+  font-size: 0.9rem;
+}
+
+.success-message {
+  margin-top: 20px;
+  padding: 14px 18px;
+  color: var(--color-discount);
+  background: rgba(124, 255, 178, 0.08);
+  border: 1px solid rgba(124, 255, 178, 0.22);
+  border-radius: var(--radius-md);
+  display: none;
+}
+
+.register-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+
+.register-buttons .btn {
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: bold;
+}
+
+@media (max-width: 640px) {
+  .register-form {
+    padding: 24px;
+  }
+
+  .register-buttons {
+    flex-direction: column;
+  }
+
+  .register-buttons .btn {
+    width: 100%;
+  }
+}
