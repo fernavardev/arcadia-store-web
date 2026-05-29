@@ -185,6 +185,8 @@ main {
   font-weight: bold;
   border-radius: 999px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  animation: pulseGlow 3s ease-in-out infinite;
 }
 
 .category-card a:hover {
@@ -373,5 +375,19 @@ footer a:hover {
 
   .register-buttons .btn {
     width: 100%;
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
