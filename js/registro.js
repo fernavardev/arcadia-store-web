@@ -119,8 +119,16 @@ function validarFormulario(event) {
   }
 
   /* Repetir contraseña */
-  if (password.value !== repetirPassword.value) {
+  if (repetirPassword.value.trim() === "") {
+    mostrarError(
+      repetirPassword,
+      "errorRepetirPassword",
+      "Debes repetir la contraseña."
+    );
 
+    formularioValido = false;
+
+  } else if (password.value !== repetirPassword.value) {
     mostrarError(
       repetirPassword,
       "errorRepetirPassword",
@@ -130,7 +138,6 @@ function validarFormulario(event) {
     formularioValido = false;
 
   } else {
-
     mostrarValido(repetirPassword);
   }
 

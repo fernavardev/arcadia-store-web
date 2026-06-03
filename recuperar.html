@@ -36,8 +36,22 @@
           </div>
         </div>
 
+        <div id="bloqueNuevaPassword" class="row g-4 mt-2" style="display: none;">
+          <div class="col-12 col-md-6">
+            <label for="nuevaPassword" class="form-label">Nueva contraseña</label>
+            <input type="password" id="nuevaPassword" class="form-control" placeholder="Nueva contraseña">
+            <div id="errorNuevaPassword" class="error-message"></div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="repetirNuevaPassword" class="form-label">Repetir nueva contraseña</label>
+            <input type="password" id="repetirNuevaPassword" class="form-control" placeholder="Repite la nueva contraseña">
+            <div id="errorRepetirNuevaPassword" class="error-message"></div>
+          </div>
+        </div>
+
         <div class="register-buttons">
-          <button type="submit" class="btn btn-primary">Recuperar contraseña</button>
+          <button type="submit" id="btnRecuperar" class="btn btn-primary">Buscar cuenta</button>
           <a href="login.html" class="btn btn-secondary">Volver al login</a>
         </div>
 
@@ -53,5 +67,113 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const formRecuperar = document.getElementById("formRecuperar");
+    const recuperarCorreo = document.getElementById("recuperarCorreo");
+    const bloqueNuevaPassword = document.getElementById("bloqueNuevaPassword");
+    const nuevaPassword = document.getElementById("nuevaPassword");
+    const repetirNuevaPassword = document.getElementById("repetirNuevaPassword");
+    const mensajeRecuperar = document.getElementById("mensajeRecuperar");
+    const btnRecuperar = document.getElementById("btnRecuperar");
+
+    let usuarioRecuperado = null;
+
+    formRecuperar.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      limpiarRecuperar();
+
+      const usuarios = obtenerUsuarios();
+
+      if (!usuarioRecuperado) {
+        usuarioRecuperado = usuarios.find(
+          usuario => usuario.correo === recuperarCorreo.value.trim()
+        );
+
+        if (!usuarioRecuperado) {
+          mostrarErrorRecuperar(
+            recuperarCorreo,
+            "errorRecuperarCorreo",
+            "No existe una cuenta registrada con este correo."
+          );
+          return;
+        }
+
+        bloqueNuevaPassword.style.display = "flex";
+        btnRecuperar.textContent = "Guardar nueva contraseña";
+        mensajeRecuperar.textContent = "Cuenta encontrada. Ingresa una nueva contraseña.";
+        mensajeRecuperar.style.display = "block";
+        return;
+      }
+
+      const passwordTexto = nuevaPassword.value;
+      const tieneMayuscula = /[A-Z]/.test(passwordTexto);
+      const tieneMinuscula = /[a-z]/.test(passwordTexto);
+      const tieneNumero = /[0-9]/.test(passwordTexto);
+
+      if (
+        passwordTexto.length < 6 ||
+        passwordTexto.length > 18 ||
+        !tieneMayuscula ||
+        !tieneMinuscula ||
+        !tieneNumero
+      ) {
+        mostrarErrorRecuperar(
+          nuevaPassword,
+          "errorNuevaPassword",
+          "La contraseña debe tener entre 6 y 18 caracteres, mayúscula, minúscula y número."
+        );
+        return;
+      }
+
+      if (nuevaPassword.value !== repetirNuevaPassword.value) {
+        mostrarErrorRecuperar(
+          repetirNuevaPassword,
+          "errorRepetirNuevaPassword",
+          "Las contraseñas no coinciden."
+        );
+        return;
+      }
+
+      const indiceUsuario = usuarios.findIndex(
+        usuario => usuario.correo === usuarioRecuperado.correo
+      );
+
+      usuarios[indiceUsuario].password = nuevaPassword.value;
+      guardarUsuarios(usuarios);
+
+      mensajeRecuperar.textContent = "Contraseña actualizada correctamente. Ya puedes iniciar sesión.";
+      mensajeRecuperar.style.display = "block";
+
+      formRecuperar.reset();
+      bloqueNuevaPassword.style.display = "none";
+      btnRecuperar.textContent = "Buscar cuenta";
+      usuarioRecuperado = null;
+    });
+
+    function limpiarRecuperar() {
+      const errores = document.querySelectorAll(".error-message");
+
+      errores.forEach(error => {
+        error.textContent = "";
+      });
+
+      const inputs = document.querySelectorAll(".form-control");
+
+      inputs.forEach(input => {
+        input.classList.remove("is-invalid");
+      });
+
+      mensajeRecuperar.style.display = "none";
+    }
+
+    function mostrarErrorRecuperar(input, idMensaje, mensaje) {
+      input.classList.add("is-invalid");
+      document.getElementById(idMensaje).textContent = mensaje;
+    }
+  </script>
 </body>
 </html>
