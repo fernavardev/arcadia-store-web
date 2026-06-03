@@ -136,9 +136,40 @@ function validarFormulario(event) {
 
   /* Resultado final */
   if (formularioValido) {
+    const usuarios = obtenerUsuarios();
 
+    const correoExiste = usuarios.some(
+      item => item.correo === correo.value.trim()
+    );
+
+    if (correoExiste) {
+      mostrarError(
+        correo,
+        "errorCorreo",
+        "Este correo ya está registrado."
+      );
+
+      mensajeExito.style.display = "none";
+      return;
+    }
+
+    const nuevoUsuario = {
+      id: Date.now(),
+      nombre: nombre.value.trim(),
+      usuario: usuario.value.trim(),
+      correo: correo.value.trim(),
+      password: password.value,
+      direccion: direccion.value.trim(),
+      rol: "cliente"
+    };
+
+    usuarios.push(nuevoUsuario);
+    guardarUsuarios(usuarios);
+
+    mensajeExito.textContent = "Usuario registrado correctamente. Ahora puedes iniciar sesión.";
     mensajeExito.style.display = "block";
 
+    formulario.reset();
   } else {
 
     mensajeExito.style.display = "none";
