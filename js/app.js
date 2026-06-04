@@ -36,7 +36,7 @@ function renderizarCatalogoCategoria() {
         
     contenedor.innerHTML += `
       <article class="game-card h-100">
-        <img src="${producto.imagen || "../img/juegos/default.jpg"}" class="img-fluid" alt="${producto.nombre}">
+        <img src="${producto.imagen || "../img/juegos/default.png"}" class="img-fluid" alt="${producto.nombre}">
         <h3>${producto.nombre}</h3>
         <p>Categoría: ${producto.categoria}</p>
         <p class="price">$${producto.precio.toLocaleString("es-CL")}</p>

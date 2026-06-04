@@ -97,7 +97,7 @@ function configurarFormularioProducto() {
       precio: Number(precio.value),
       stock: Number(stock.value),
       descuento: Number(descuento.value) || 0,
-      imagen: imagen.value.trim() || "img/juegos/default.jpg"
+      imagen: imagen.value.trim() || "img/juegos/default.png"
     };
 
     productos.push(nuevoProducto);
